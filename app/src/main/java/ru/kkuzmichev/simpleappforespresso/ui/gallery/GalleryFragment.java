@@ -68,6 +68,7 @@ public class GalleryFragment extends Fragment {
             @Override
             public void run() {
                 {
+                    recyclerView.setAdapter(new GalleryAdapter(itemList));
                     progressBar.setVisibility(View.INVISIBLE);
                     recyclerView.setVisibility(View.VISIBLE);
                     EspressoIdlingResources.decrement();

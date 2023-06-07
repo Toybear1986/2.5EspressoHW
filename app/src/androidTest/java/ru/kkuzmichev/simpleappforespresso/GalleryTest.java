@@ -4,12 +4,14 @@ package ru.kkuzmichev.simpleappforespresso;
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
+import static androidx.test.espresso.matcher.ViewMatchers.isAssignableFrom;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.withContentDescription;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.Matchers.allOf;
 
+import androidx.appcompat.widget.AppCompatImageButton;
 import androidx.test.espresso.IdlingRegistry;
 import androidx.test.espresso.ViewInteraction;
 import androidx.test.ext.junit.rules.ActivityScenarioRule;
@@ -47,6 +49,21 @@ public class GalleryTest {
         gallery.perform(click());
         ViewInteraction galleryItem = onView(allOf(withId(R.id.item_number), withText("7")));
         galleryItem.check(matches(withText("7")));
+    }
+
+    @Test
+    public void testGalleryRecyclerView() {
+        ViewInteraction menu = onView(isAssignableFrom(AppCompatImageButton.class));
+        menu.check(matches(isDisplayed()));
+        menu.perform(click());
+        ViewInteraction gallery = onView(withId(R.id.nav_gallery));
+        gallery.check(matches(isDisplayed()));
+        gallery.perform(click());
+
+        ViewInteraction recyclerView = onView(CustomViewMatcher.recyclerViewSizeMatcher(10));
+        recyclerView.check(matches(isDisplayed()));
+        recyclerView.check(CustomViewAssertions.isRecyclerView());
+        recyclerView.check(matches(CustomViewMatcher.recyclerViewSizeMatcher(10)));
     }
 
     @After
